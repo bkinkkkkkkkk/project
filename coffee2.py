@@ -18,7 +18,7 @@ st.markdown("分析咖啡消费对睡眠、压力和健康的影响")
 # ------------------------
 @st.cache_data(ttl=600)
 def load_data():
-    df = pd.read_csv(r"C:\Users\Administrator\Desktop\project\data\synthetic_coffee_health_10000.csv")
+    df = pd.read_csv(r"synthetic_coffee_health_10000.csv")
     return df
 
 data = load_data()
@@ -213,3 +213,4 @@ with tab5:
 st.markdown("---")
 st.markdown("数据来源：Global Coffee Health Dataset (Synthetic)")
 st.markdown("作者：Your Name")
+
