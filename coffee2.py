@@ -212,5 +212,6 @@ with tab5:
 # ------------------------
 st.markdown("---")
 st.markdown("数据来源：Global Coffee Health Dataset (Synthetic)")
-st.markdown("作者：Your Name")
+st.markdown("作者： Name")
+
 
