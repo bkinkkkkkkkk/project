@@ -5,6 +5,7 @@ import pandas as pd
 import plotly.express as px
 import seaborn as sns
 import matplotlib.pyplot as plt
+from streamlit_echarts import st_echarts
 
 # ------------------------
 # 1️⃣ 页面标题
@@ -229,6 +230,7 @@ with tab5:
 st.markdown("---")
 st.markdown("数据来源：Global Coffee Health Dataset (Synthetic)")
 st.markdown("作者： Name")
+
 
 
 
