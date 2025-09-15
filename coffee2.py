@@ -17,10 +17,14 @@ st.markdown("分析咖啡消费对睡眠、压力和健康的影响")
 
 # ------------------------
 # 2️⃣ 数据加载
-# ------------------------
 @st.cache_data(ttl=600)
 def load_data():
     df = pd.read_csv(r"synthetic_coffee_health_10000.csv")
+
+    # ✅ 清洗掉性别不确定的数据
+    valid_genders = ["Male", "Female"]
+    df = df[df["Gender"].isin(valid_genders)].copy()
+
     return df
 
 data = load_data()
@@ -222,6 +226,7 @@ with tab5:
 st.markdown("---")
 st.markdown("数据来源：Global Coffee Health Dataset (Synthetic)")
 st.markdown("作者： Name")
+
 
 
 
