@@ -1,11 +1,12 @@
-# streamlit_coffee_health.py
 
 import streamlit as st
 import pandas as pd
 import plotly.express as px
 import seaborn as sns
 import matplotlib.pyplot as plt
-from streamlit_echarts import st_echarts
+from pyecharts.charts import Map
+from pyecharts import options as opts
+from streamlit_echarts import st_pyecharts
 
 # ------------------------
 # 1️⃣ 页面标题
@@ -104,34 +105,25 @@ with tab2:
 with tab3:
     st.subheader("全球平均咖啡消费热力图")
     country_avg = filtered_data.groupby('Country')['Coffee_Intake'].mean().reset_index()
-    data_list = [
-    {"name": row['Country'], "value": round(row['Coffee_Intake'], 2)}
-    for _, row in country_avg.iterrows()
-]
-    
-    # ECharts 配置
-    option = {
-    "tooltip": {"trigger": "item"},
-    "visualMap": {
-        "min": min(country_avg['Coffee_Intake']),
-        "max": max(country_avg['Coffee_Intake']),
-        "text": ["High", "Low"],
-        "realtime": False,
-        "calculable": True,
-        "inRange": {"color": ["#FFE0B2", "#FF5722"]}
-    },
-    "series": [{
-        "name": "平均咖啡摄入量",
-        "type": "map",
-        "map": "world",
-        "roam": True,
-        "emphasis": {"label": {"show": True}},
-        "data": data_list
-    }]
-}
+   # 转换成 pyecharts 需要的格式 [(国家, 值), ...]
+    data_list = [(row['Country'], round(row['Coffee_Intake'], 2)) for _, row in country_avg.iterrows()]
+   # 构建地图
+    c = (
+        Map()
+        .add("平均咖啡摄入量", data_list, "world")
+        .set_global_opts(
+            title_opts=opts.TitleOpts(title="全球平均咖啡消费热力图"),
+            visualmap_opts=opts.VisualMapOpts(
+                min_=float(country_avg['Coffee_Intake'].min()),
+                max_=float(country_avg['Coffee_Intake'].max()),
+                is_piecewise=False,
+                range_color=["#FFE0B2", "#FF5722"]
+            )
+        )
+    )
 
-    #渲染地图
-    st_echarts(options=option, height="600px")
+    # 渲染到 streamlit
+    st_pyecharts(c)
 
 # 📦 分类分析
 # ------------------------
@@ -230,6 +222,7 @@ with tab5:
 st.markdown("---")
 st.markdown("数据来源：Global Coffee Health Dataset (Synthetic)")
 st.markdown("作者： Name")
+
 
 
 
