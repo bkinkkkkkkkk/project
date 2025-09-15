@@ -131,7 +131,7 @@ with tab3:
 }
 
     #渲染地图
-    st_echarts(option, height="600px")
+    st_echarts(options=option, height="600px")
 
 # 📦 分类分析
 # ------------------------
@@ -230,6 +230,7 @@ with tab5:
 st.markdown("---")
 st.markdown("数据来源：Global Coffee Health Dataset (Synthetic)")
 st.markdown("作者： Name")
+
 
 
 
