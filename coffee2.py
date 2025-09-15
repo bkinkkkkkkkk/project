@@ -103,18 +103,34 @@ with tab2:
 with tab3:
     st.subheader("全球平均咖啡消费热力图")
     country_avg = filtered_data.groupby('Country')['Coffee_Intake'].mean().reset_index()
-    fig_map = px.choropleth(country_avg,
-                            locations='Country',
-                            locationmode='country names',
-                            color='Coffee_Intake',
-                            color_continuous_scale='Blues',
-                            title="各国平均每日咖啡摄入量")
-    fig_map.update_layout(
-    width=1200,   # 宽度（像素）
-    height=700,   # 高度（像素）
-      )
+    data_list = [
+    {"name": row['Country'], "value": round(row['Coffee_Intake'], 2)}
+    for _, row in country_avg.iterrows()
+]
+    
+    # ECharts 配置
+    option = {
+    "tooltip": {"trigger": "item"},
+    "visualMap": {
+        "min": min(country_avg['Coffee_Intake']),
+        "max": max(country_avg['Coffee_Intake']),
+        "text": ["High", "Low"],
+        "realtime": False,
+        "calculable": True,
+        "inRange": {"color": ["#FFE0B2", "#FF5722"]}
+    },
+    "series": [{
+        "name": "平均咖啡摄入量",
+        "type": "map",
+        "map": "world",
+        "roam": True,
+        "emphasis": {"label": {"show": True}},
+        "data": data_list
+    }]
+}
 
-    st.plotly_chart(fig_map, use_container_width=False)
+    #渲染地图
+    st_echarts(option, height="600px")
 
 # 📦 分类分析
 # ------------------------
@@ -213,5 +229,6 @@ with tab5:
 st.markdown("---")
 st.markdown("数据来源：Global Coffee Health Dataset (Synthetic)")
 st.markdown("作者： Name")
+
 
 
